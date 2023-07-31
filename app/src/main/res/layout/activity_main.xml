@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backround"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="169dp"
+        android:layout_height="169dp"
+        android:layout_marginTop="64dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/avatar_christmas"
+        tools:srcCompat="@drawable/avatar_christmas" />
+
+    <Button
+        android:id="@+id/buttonTrack"
+        style="@android:style/Widget.DeviceDefault.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="Track my Device"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/buttonColorTint"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/orText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="or"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/buttonTrack"
+        app:layout_constraintStart_toStartOf="@+id/buttonTrack"
+        app:layout_constraintTop_toBottomOf="@+id/buttonTrack" />
+
+    <Button
+        android:id="@+id/buttonSearch"
+        style="@android:style/Widget.DeviceDefault.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Search for a Device"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/buttonColorTint"
+        app:layout_constraintEnd_toEndOf="@+id/orText"
+        app:layout_constraintStart_toStartOf="@+id/orText"
+        app:layout_constraintTop_toBottomOf="@+id/orText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

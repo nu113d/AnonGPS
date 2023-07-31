@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AnonGPS" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowBackground">@color/BaseColor</item>
+        <item name="android:colorPrimary">@color/BaseColor</item>
+        <item name="android:colorPrimaryDark">@color/BaseColor</item>
+        <item name="android:textColorLink">@color/BaseColor</item>
+    </style>
+
+    <style name="Theme.AnonGPS" parent="Base.Theme.AnonGPS" />
+</resources>
