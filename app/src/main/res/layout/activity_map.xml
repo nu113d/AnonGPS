@@ -27,7 +27,7 @@
         android:gravity="center_horizontal"
         android:text="[Time]"
         android:textColor="@color/white"
-        android:textSize="28sp"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameView" />
@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:background="@color/BaseColor"
         android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timeView">
 
         <TextView
@@ -46,6 +47,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:text="Lat:\n"
             android:textColor="@color/white"
             android:textSize="20sp" />
@@ -55,6 +58,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:gravity="center_horizontal"
             android:text="Lon:\n"
             android:textColor="@color/white"
@@ -65,6 +70,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:gravity="center_horizontal"
             android:text="Altitude:\n"
             android:textColor="@color/white"
@@ -75,6 +82,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:gravity="center_horizontal"
             android:text="Speed:\n"
             android:textColor="@color/white"

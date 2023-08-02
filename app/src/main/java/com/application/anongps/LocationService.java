@@ -26,8 +26,8 @@ import com.google.android.gms.location.Priority;
 
 public class LocationService extends Service {
     private static final String TAG = "LocationService";
-    Encryptor encryptor;
-    RemoteDB db;
+    private Encryptor encryptor;
+    private RemoteDB db;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationCallback locationCallback;
     private String encLat, encLon, encSpeed, encAlt;
@@ -83,7 +83,6 @@ public class LocationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand: called.");
         encryptor = (Encryptor) intent.getSerializableExtra("ENCRYPTOR");
         updateInterval = intent.getIntExtra("INTERVAL", 30000);
         deleteRecords = intent.getBooleanExtra("DEL", false);
@@ -116,7 +115,6 @@ public class LocationService extends Service {
                 .build();
 
 
-        // new Google API SDK v11 uses getFusedLocationProviderClient(this)
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "getLocation: stopping the location service.");

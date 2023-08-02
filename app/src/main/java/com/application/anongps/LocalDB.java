@@ -54,6 +54,16 @@ public class LocalDB extends SQLiteOpenHelper {
         }
         return cursor;
     }
+
+    public Cursor fetchNameData(String name) {
+        SQLiteDatabase db = getReadableDatabase();
+        String[] columns = new String[] { LocalDB.COLUMN_UUID, LocalDB.COLUMN_KEY, LocalDB.COLUMN_IV };
+        Cursor cursor = db.query(LocalDB.TABLE_NAME, columns, LocalDB.COLUMN_NAME + "= '" + name + "'", null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
     public void delete(String name) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(LocalDB.TABLE_NAME, LocalDB.COLUMN_NAME + "= '" + name + "'", null);

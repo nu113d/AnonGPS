@@ -2,64 +2,55 @@ package com.application.anongps;
 
 import java.io.Serializable;
 
+//holds the encrypted data
 public class Device implements Serializable {
-    private float lon, lat, speed, alt;
-    private String uuid;
-    private int deleteInterval, updateInterval;
+    private String uuid, lon, lat, speed, alt, time;
 
-    public float getLon() {
+    public Device(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getLon() {
         return lon;
     }
 
-    public void setLon(float lon) {
+    public void setLon(String lon) {
         this.lon = lon;
     }
 
-    public float getLat() {
+    public String getLat() {
         return lat;
     }
 
-    public void setLat(float lat) {
+    public void setLat(String lat) {
         this.lat = lat;
     }
 
-    public float getSpeed() {
+    public String getSpeed() {
         return speed;
     }
 
-    public void setSpeed(float speed) {
+    public void setSpeed(String speed) {
         this.speed = speed;
     }
 
-    public float getAlt() {
+    public String getAlt() {
         return alt;
     }
 
-    public void setAlt(float alt) {
+    public void setAlt(String alt) {
         this.alt = alt;
-    }
-
-    public int getDeleteInterval() {
-        return deleteInterval;
-    }
-
-    public void setDeleteInterval(int deleteInterval) {
-        this.deleteInterval = deleteInterval;
-    }
-
-    public int getUpdateInterval() {
-        return updateInterval;
-    }
-
-    public void setUpdateInterval(int updateInterval) {
-        this.updateInterval = updateInterval;
     }
 
     public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

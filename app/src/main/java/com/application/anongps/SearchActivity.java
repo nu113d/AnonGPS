@@ -78,9 +78,9 @@ public class SearchActivity extends AppCompatActivity {
 
                 // Device ID = 32 chars uuid + 64 chars key + 32 chars IV = 128 chars
                 if (id.length() == 128) {
-                    uuid = id.substring(0, 32);
-                    key = id.substring(32, 96);
-                    iv = id.substring(96, 128);
+                     uuid = id.substring(0, 32);
+                     key = id.substring(32, 96);
+                     iv = id.substring(96, 128);
                     addName(name);
                     nameText.setText("");
                     idText.setText("");
@@ -168,6 +168,7 @@ public class SearchActivity extends AppCompatActivity {
     private void openMapActivity(String name) {
         Toast.makeText(this, "Selected name: " + name, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MapActivity.class);
+        intent.putExtra("Name", name);
         startActivity(intent);
     }
 

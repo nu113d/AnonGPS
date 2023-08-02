@@ -1,13 +1,10 @@
 package com.application.anongps;
 
 import android.os.StrictMode;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -24,62 +21,33 @@ public class OkHttpHandler {
         StrictMode.setThreadPolicy(policy);
     }
 
-    public String makeGetRequest(String url) {
+    public String getRequest(String url) {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                // Handle failure
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                // Handle successful response
-                if (response.isSuccessful()) {
-                    jsonResponse = response.body().string();
-                    // Process the response data
-                }
-                response.close();
-            }
-        });
-        return jsonResponse;
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+            jsonResponse = response.body().string();
+        } catch (IOException e) {
+            //note that Firebase returns "null" when data not found
+            return "null";
+        }
+        response.close();
+        return  jsonResponse;
     }
 
-    public void makePatchRequest(String url, String jsonBody) {
+    public void patchRequest(String url, String jsonBody) {
         RequestBody requestBody = RequestBody.create(jsonBody, MediaType.parse("application/json"));
         Request request = new Request.Builder()
                 .url(url)
                 .patch(requestBody)
                 .build();
-
-//        client.newCall(request).enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                e.printStackTrace();
-//                // Handle failure
-//            }
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                // Handle successful response
-//                if (response.isSuccessful()) {
-//                    jsonResponse = response.body().string();
-//                    // Process the response data
-//                }
-//                else{
-//                    Log.d("okhtttp", jsonResponse);
-//                }
-//                response.close();
-//            }
-//        });
-//        Log.d("okhtttp", jsonResponse);
         Response response = null;
         try {
             response = client.newCall(request).execute();
             jsonResponse = response.body().string();
+            response.close();
         } catch (IOException e) {
             return;
         }
@@ -95,6 +63,7 @@ public class OkHttpHandler {
         try {
             response = client.newCall(request).execute();
             jsonResponse = response.body().string();
+            response.close();
         } catch (IOException e) {
             return;
         }
