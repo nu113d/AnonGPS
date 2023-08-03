@@ -1,5 +1,7 @@
 package com.application.anongps;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 
 //holds the encrypted data
@@ -8,6 +10,9 @@ public class Device implements Serializable {
 
     public Device(String uuid) {
         this.uuid = uuid;
+    }
+    public Device() {
+
     }
 
     public String getLon() {
@@ -42,6 +47,7 @@ public class Device implements Serializable {
         this.alt = alt;
     }
 
+    @Exclude
     public String getUuid() {
         return uuid;
     }

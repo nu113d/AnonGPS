@@ -23,14 +23,16 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LocationService extends Service {
     private static final String TAG = "LocationService";
     private Encryptor encryptor;
-    private RemoteDB db;
+    private Device dev;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationCallback locationCallback;
-    private String encLat, encLon, encSpeed, encAlt;
     private int updateInterval;
     private boolean deleteRecords;
 
@@ -58,11 +60,12 @@ public class LocationService extends Service {
                     String time = String.valueOf(location.getTime());
                     Toast.makeText(getApplicationContext(), lat + " " + lon , Toast.LENGTH_SHORT).show();
 
-                    encLat = encryptor.encrypt(lat);
-                    encLon = encryptor.encrypt(lon);
-                    encSpeed = encryptor.encrypt(speed);
-                    encAlt = encryptor.encrypt(alt);
-                    db.saveData(encLat, encLon, encAlt, encSpeed,time);
+                    dev.setLat(encryptor.encrypt(lat));
+                    dev.setLon(encryptor.encrypt(lon));
+                    dev.setAlt(encryptor.encrypt(alt));
+                    dev.setSpeed(encryptor.encrypt(speed));
+                    dev.setTime(time);
+                    saveData(dev);
                 }
             }
         };
@@ -86,7 +89,7 @@ public class LocationService extends Service {
         encryptor = (Encryptor) intent.getSerializableExtra("ENCRYPTOR");
         updateInterval = intent.getIntExtra("INTERVAL", 30000);
         deleteRecords = intent.getBooleanExtra("DEL", false);
-        db = new RemoteDB(encryptor.getUuid());
+        dev = new Device(encryptor.getUuid());
         getLocation();
         return START_NOT_STICKY;
     }
@@ -98,7 +101,9 @@ public class LocationService extends Service {
             mFusedLocationClient.removeLocationUpdates(locationCallback);
         }
         if(deleteRecords){
-            db.deleteData(encryptor.getUuid());
+            //delete device
+            DatabaseReference deviceRef = database.getInstance().getReference("devices").child(encryptor.getUuid());
+            deviceRef.removeValue();
         }
         Log.d(TAG, "stopping LocationService.");
         stopSelf();
@@ -123,6 +128,12 @@ public class LocationService extends Service {
         }
         Log.d(TAG, "getLocation: getting location information.");
         mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper()); // Looper.myLooper tells this to repeat forever until thread is destroyed
+    }
+    private void saveData(Device dev) {
+        DatabaseReference dbRef = database.getInstance().getReference("devices");
+        String uuid = encryptor.getUuid();
+
+        dbRef.child(uuid).setValue(dev);
     }
 
 }

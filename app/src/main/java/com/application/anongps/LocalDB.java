@@ -41,7 +41,7 @@ public class LocalDB extends SQLiteOpenHelper {
         values.put(COLUMN_NAME, name);
         values.put(COLUMN_KEY, key);
         values.put(COLUMN_IV, iv);
-        long insertResult = db.insert(TABLE_NAME, null, values);
+        long insertResult = db.insert(TABLE_NAME, null, values); //returns -1 for duplicate uuid
         db.close();
         return insertResult;
     }

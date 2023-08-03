@@ -11,6 +11,12 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
@@ -29,11 +35,9 @@ public class MapActivity extends AppCompatActivity {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map = null;
     private String name, uuid, key, iv;
-    private Device dev;
     private Decryptor decryptor;
-    private RemoteDB remoteDB;
     private LocalDB localDB;
-    private ScheduledExecutorService executorService;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
     @Override
@@ -41,7 +45,6 @@ public class MapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        executorService = Executors.newScheduledThreadPool(1);
 
         TextView nameTxt = (TextView) findViewById(R.id.nameView);
         TextView timeTxt = (TextView) findViewById(R.id.timeView);
@@ -57,11 +60,8 @@ public class MapActivity extends AppCompatActivity {
 
 
         localDB = new LocalDB(this);
-        //load data from SQLite db
-        loadNameData(name);
+        loadNameData(name); //load data from SQLite db
         decryptor = new Decryptor(key, iv);
-        remoteDB = new RemoteDB(uuid);
-
 
         //set User-Agent as needed (https://osmdroid.github.io/osmdroid/Important-notes-on-using-osmdroid-in-your-app.html)
         Context ctx = getApplicationContext();
@@ -73,57 +73,55 @@ public class MapActivity extends AppCompatActivity {
         mMapController.setZoom(12);
         GeoPoint point = new GeoPoint(0, 0);
         Marker marker = new Marker(map);
+        marker.setInfoWindow(null);
 
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
 
-        executorService.scheduleAtFixedRate(new Runnable() {
+        DatabaseReference deviceRef = database.getInstance().getReference("devices").child(uuid);
+        ValueEventListener postListener = new ValueEventListener() {
             @Override
-            public void run() {
-                dev = remoteDB.getData();
-                // Update the UI
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        Log.d("inner run", "ui thread executed");
-                        if(dev == null){
-                            Toast.makeText(getApplicationContext(), "Device not found" , Toast.LENGTH_SHORT).show();
-                            timeTxt.setText("-");
-                            latTxt.setText(getString(R.string.Lat, "-"));
-                            lonTxt.setText(getString(R.string.Lon, "-"));
-                            altTxt.setText(getString(R.string.Alt, "-"));
-                            speedTxt.setText(getString(R.string.Speed, "-"));
-                        }else{
-                            //decrypt data
-                            long time = Long.parseLong(dev.getTime());
-                            String date = timeToDate(time);
-                            String decLat = decryptor.decrypt(dev.getLat());
-                            String decLon = decryptor.decrypt(dev.getLon());
-                            String decAlt = decryptor.decrypt(dev.getAlt());
-                            String decSpeed = decryptor.decrypt(dev.getSpeed());
+                Device dev = dataSnapshot.getValue(Device.class);
+                if(dev == null){
+                    Toast.makeText(getApplicationContext(), "Device not found" , Toast.LENGTH_SHORT).show();
+                    timeTxt.setText("-");
+                    latTxt.setText(getString(R.string.Lat, "-"));
+                    lonTxt.setText(getString(R.string.Lon, "-"));
+                    altTxt.setText(getString(R.string.Alt, "-"));
+                    speedTxt.setText(getString(R.string.Speed, "-"));
+                }else{
+                    //decrypt data
+                    long time = Long.parseLong(dev.getTime());
+                    String date = timeToDate(time);
+                    String decLat = decryptor.decrypt(dev.getLat());
+                    String decLon = decryptor.decrypt(dev.getLon());
+                    String decAlt = decryptor.decrypt(dev.getAlt());
+                    String decSpeed = decryptor.decrypt(dev.getSpeed());
 
-                            //update views
-                            timeTxt.setText(date);
-                            latTxt.setText(getString(R.string.Lat, decLat));
-                            lonTxt.setText(getString(R.string.Lon, decLon));
-                            altTxt.setText(getString(R.string.Alt, decAlt));
-                            speedTxt.setText(getString(R.string.Speed, decSpeed));
+                    //update views
+                    timeTxt.setText(date);
+                    latTxt.setText(getString(R.string.Lat, decLat));
+                    lonTxt.setText(getString(R.string.Lon, decLon));
+                    altTxt.setText(getString(R.string.Alt, decAlt));
+                    speedTxt.setText(getString(R.string.Speed, decSpeed));
 
-                            //update map
-                            point.setCoords(Float.parseFloat(decLat), Float.parseFloat(decLon));
-                            mMapController.animateTo(point);
-                            marker.setPosition(point);
-                            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                            map.getOverlays().add(marker);
-                        }
-
-                    }
-                });
-
-               Log.d("outer run", "thread executed");
+                    //update map
+                    point.setCoords(Float.parseFloat(decLat), Float.parseFloat(decLon));
+                    mMapController.animateTo(point);
+                    marker.setPosition(point);
+                    marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                    map.getOverlays().add(marker);
+                }
             }
-        }, 0, 30, TimeUnit.SECONDS);
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Error. Cannot connect to database" , Toast.LENGTH_SHORT).show();
+            }
+        };
+        deviceRef.addValueEventListener(postListener);
     }
     @Override
     public void onResume() {
@@ -135,12 +133,6 @@ public class MapActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         map.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        executorService.shutdown();
     }
 
     private void loadNameData(String name) {

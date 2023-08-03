@@ -50,7 +50,6 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         Button shareBtn = (Button) findViewById(R.id.shareBtn);
         Button resetBtn = (Button) findViewById(R.id.resetBtn);
         Button help1Btn = (Button) findViewById(R.id.help1);
-        Button help2Btn = (Button) findViewById(R.id.help2);
         TextView idTxtView = (TextView) findViewById(R.id.IdText);
         TextView titleTxt = (TextView) findViewById(R.id.textView2);
         TextView infoTxt = (TextView) findViewById(R.id.infoTextView);
@@ -103,9 +102,9 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         }
 
         if (masterSwitch.isChecked()) {
-            showIdViews(titleTxt, idTxtView, copyBtn, shareBtn, spin, infoTxt, idText, recordSwitch, help2Btn);
+            showIdViews(titleTxt, idTxtView, copyBtn, shareBtn, spin, infoTxt, idText, recordSwitch);
         } else {
-            hideIdViews(titleTxt, idTxtView, copyBtn, shareBtn, spin, infoTxt, recordSwitch, help2Btn);
+            hideIdViews(titleTxt, idTxtView, copyBtn, shareBtn, spin, infoTxt, recordSwitch);
         }
 
         //copy id
@@ -141,13 +140,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
                         "If disabled, your data will be deleted automatically after 2 days of inactivity", true);
             }
         });
-        //ID help button
-        help2Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                okAlert("Help", "This ID is always the same as long as you don't reset the keys. Share it just once to the devices you want to track your location", true);
-            }
-        });
+
         //reset keys button
         resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,12 +197,12 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
                     editor.apply();
                     idText = uuid+key+iv;
                     startStopLocationService(true);
-                    showIdViews(titleTxt, idTxtView, copyBtn, shareBtn, spin, infoTxt, idText, recordSwitch, help2Btn);
+                    showIdViews(titleTxt, idTxtView, copyBtn, shareBtn, spin, infoTxt, idText, recordSwitch);
 
 
                 } else {
                     startStopLocationService(false);
-                    hideIdViews(titleTxt, idTxtView, copyBtn, shareBtn, spin, infoTxt, recordSwitch, help2Btn);
+                    hideIdViews(titleTxt, idTxtView, copyBtn, shareBtn, spin, infoTxt, recordSwitch);
 
                 }
             }
@@ -351,24 +344,22 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    private void showIdViews(TextView titleTxt, TextView idTxt, Button copyBtn, Button shareBtn, Spinner spin, TextView infoTxt, String idText, Switch switchRecord, Button help2Btn) {
+    private void showIdViews(TextView titleTxt, TextView idTxt, Button copyBtn, Button shareBtn, Spinner spin, TextView infoTxt, String idText, Switch switchRecord) {
         titleTxt.setVisibility(View.VISIBLE);
         idTxt.setVisibility(View.VISIBLE);
         copyBtn.setVisibility(View.VISIBLE);
         shareBtn.setVisibility(View.VISIBLE);
-        help2Btn.setVisibility(View.VISIBLE);
         infoTxt.setVisibility(View.VISIBLE);
         spin.setEnabled(false);
         switchRecord.setEnabled(false);
         idTxt.setText(idText);
     }
 
-    private void hideIdViews(TextView titleTxt, TextView idTxt, Button copyBtn, Button shareBtn, Spinner spin, TextView infoTxt, Switch switchRecord, Button help2Btn) {
+    private void hideIdViews(TextView titleTxt, TextView idTxt, Button copyBtn, Button shareBtn, Spinner spin, TextView infoTxt, Switch switchRecord) {
         titleTxt.setVisibility(View.GONE);
         idTxt.setVisibility(View.GONE);
         copyBtn.setVisibility(View.GONE);
         shareBtn.setVisibility(View.GONE);
-        help2Btn.setVisibility(View.GONE);
         infoTxt.setVisibility(View.GONE);
         spin.setEnabled(true);
         switchRecord.setEnabled(true);
