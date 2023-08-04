@@ -3,6 +3,7 @@ package com.application.anongps;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Group;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -35,7 +36,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
     String selectedFrequency; //the above selection of the user (saved in Preferences)
     int updateInterval; //converted frequency to ms (passed to location service)
     String key, iv, uuid;
-    String idText;
+    String deviceID;
     Encryptor encryptor;
     boolean locationPermissionGranted = false;
     boolean delRecords = false;
@@ -46,16 +47,17 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Button copyBtn = (Button) findViewById(R.id.copyBtn);
         Button shareBtn = (Button) findViewById(R.id.shareBtn);
         Button resetBtn = (Button) findViewById(R.id.resetBtn);
         Button help1Btn = (Button) findViewById(R.id.help1);
+        Button qrBtn = (Button) findViewById(R.id.QRBtn);
         TextView idTxtView = (TextView) findViewById(R.id.IdText);
-        TextView titleTxt = (TextView) findViewById(R.id.textView2);
-        TextView infoTxt = (TextView) findViewById(R.id.infoTextView);
         Spinner spin = (Spinner) findViewById(R.id.timeSpinner);
         Switch masterSwitch = findViewById(R.id.masterSwitch);
         Switch recordSwitch = findViewById(R.id.recordSwitch);
+        Group idViewsGroup = findViewById(R.id.group);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("com.application.anongps", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         spin.setOnItemSelectedListener(this);
@@ -86,7 +88,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         uuid = pref.getString("uuid", null);
         selectedFrequency = pref.getString("Update Interval", "30 seconds");
         delRecords = pref.getBoolean("del Records", false);
-        idText = uuid+key+iv;
+        deviceID = uuid+key+iv;
 
         if(delRecords){
             recordSwitch.setChecked(true);
@@ -102,12 +104,12 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         }
 
         if (masterSwitch.isChecked()) {
-            showIdViews(titleTxt, idTxtView, copyBtn, shareBtn, spin, infoTxt, idText, recordSwitch);
+            showIdViews(idViewsGroup, idTxtView, spin, deviceID, recordSwitch);
         } else {
-            hideIdViews(titleTxt, idTxtView, copyBtn, shareBtn, spin, infoTxt, recordSwitch);
+            hideIdViews(idViewsGroup, idTxtView, spin, recordSwitch);
         }
 
-        //copy id
+        //copy id button
         copyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,7 +122,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
 
             }
         });
-        //share
+        //share button
         shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,6 +134,16 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
 
             }
         });
+        //qr button
+        qrBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent qrIntent = new Intent(getApplicationContext(), QRActivity.class);
+                qrIntent.putExtra("ID", deviceID);
+                startActivity(qrIntent);
+            }
+        });
+
         //delete records help button
         help1Btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,15 +207,12 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
                     editor.putString("Update Interval", selectedFrequency);
                     editor.putBoolean("del Records", delRecords);
                     editor.apply();
-                    idText = uuid+key+iv;
+                    deviceID = uuid+key+iv;
                     startStopLocationService(true);
-                    showIdViews(titleTxt, idTxtView, copyBtn, shareBtn, spin, infoTxt, idText, recordSwitch);
-
-
+                    showIdViews(idViewsGroup, idTxtView, spin, deviceID, recordSwitch);
                 } else {
                     startStopLocationService(false);
-                    hideIdViews(titleTxt, idTxtView, copyBtn, shareBtn, spin, infoTxt, recordSwitch);
-
+                    hideIdViews(idViewsGroup, idTxtView, spin, recordSwitch);
                 }
             }
         });
@@ -344,24 +353,16 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    private void showIdViews(TextView titleTxt, TextView idTxt, Button copyBtn, Button shareBtn, Spinner spin, TextView infoTxt, String idText, Switch switchRecord) {
-        titleTxt.setVisibility(View.VISIBLE);
-        idTxt.setVisibility(View.VISIBLE);
-        copyBtn.setVisibility(View.VISIBLE);
-        shareBtn.setVisibility(View.VISIBLE);
-        infoTxt.setVisibility(View.VISIBLE);
+    private void showIdViews(Group idViewsGroup, TextView idTxt, Spinner spin, String deviceID, Switch switchRecord) {
         spin.setEnabled(false);
         switchRecord.setEnabled(false);
-        idTxt.setText(idText);
+        idTxt.setText(deviceID);
+        idViewsGroup.setVisibility(View.VISIBLE);
     }
 
-    private void hideIdViews(TextView titleTxt, TextView idTxt, Button copyBtn, Button shareBtn, Spinner spin, TextView infoTxt, Switch switchRecord) {
-        titleTxt.setVisibility(View.GONE);
-        idTxt.setVisibility(View.GONE);
-        copyBtn.setVisibility(View.GONE);
-        shareBtn.setVisibility(View.GONE);
-        infoTxt.setVisibility(View.GONE);
+    private void hideIdViews(Group idViewsGroup, TextView idTxt, Spinner spin, Switch switchRecord) {
         spin.setEnabled(true);
         switchRecord.setEnabled(true);
+        idViewsGroup.setVisibility(View.GONE);
     }
 }

@@ -26,8 +26,11 @@ import com.google.android.gms.location.Priority;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DecimalFormat;
+
 public class LocationService extends Service {
     private static final String TAG = "LocationService";
+    private DecimalFormat roundedValue = new DecimalFormat("#.#"); //for rounding speed and altitude to 1 decimal
     private Encryptor encryptor;
     private Device dev;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -55,10 +58,10 @@ public class LocationService extends Service {
                 if (location != null) {
                     String lat = String.valueOf(location.getLatitude());
                     String lon = String.valueOf(location.getLongitude());
-                    String speed = String.valueOf(location.getSpeed());
-                    String alt = String.valueOf(location.getAltitude());
+                    String speed = roundedValue.format(location.getSpeed());
+                    String alt = roundedValue.format(location.getAltitude());
                     String time = String.valueOf(location.getTime());
-                    Toast.makeText(getApplicationContext(), lat + " " + lon , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Location shared" , Toast.LENGTH_SHORT).show();
 
                     dev.setLat(encryptor.encrypt(lat));
                     dev.setLon(encryptor.encrypt(lon));
