@@ -4,5 +4,5 @@
     <string name="Lat">Lat:\n%1$s</string>
     <string name="Lon">Lon:\n%1$s</string>
     <string name="Alt">Altitude:\n%1$s m</string>
-    <string name="Speed">Speed:\n%1$s m/s</string>
+    <string name="Speed">Speed:\n%1$s km/h</string>
 </resources>

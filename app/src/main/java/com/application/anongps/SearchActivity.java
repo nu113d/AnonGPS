@@ -166,7 +166,6 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void openMapActivity(String name) {
-        Toast.makeText(this, "Selected name: " + name, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MapActivity.class);
         intent.putExtra("Name", name);
         startActivity(intent);

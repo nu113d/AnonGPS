@@ -58,10 +58,9 @@ public class LocationService extends Service {
                 if (location != null) {
                     String lat = String.valueOf(location.getLatitude());
                     String lon = String.valueOf(location.getLongitude());
-                    String speed = roundedValue.format(location.getSpeed());
+                    String speed = roundedValue.format(location.getSpeed() * 3.6); // converted to kmh
                     String alt = roundedValue.format(location.getAltitude());
                     String time = String.valueOf(location.getTime());
-                    Toast.makeText(getApplicationContext(), "Location shared" , Toast.LENGTH_SHORT).show();
 
                     dev.setLat(encryptor.encrypt(lat));
                     dev.setLon(encryptor.encrypt(lon));
@@ -69,6 +68,7 @@ public class LocationService extends Service {
                     dev.setSpeed(encryptor.encrypt(speed));
                     dev.setTime(time);
                     saveData(dev);
+                    Toast.makeText(getApplicationContext(), "Location shared" , Toast.LENGTH_SHORT).show();
                 }
             }
         };
