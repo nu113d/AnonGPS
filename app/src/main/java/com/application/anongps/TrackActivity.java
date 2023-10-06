@@ -65,11 +65,6 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         //check permissions
         getLocationPermission();
 
-        //check internet connection
-        if(!isNetworkAvailable()){
-            okAlert("Connection problem", "Internet connection is not available. Make sure you are connected to the internet", false);
-        }
-
         //check if gps is enabled
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
         if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
@@ -186,7 +181,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
 
                 if (isChecked) {
                     //check loaded preference values
-                    if(key == null || iv == null){ //if no keys exist
+                    if(key == null){ //if no keys exist
                         encryptor = new Encryptor();  //generate new keys
                         key = encryptor.getKey();
                         iv = encryptor.getIV();
@@ -208,10 +203,10 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
                     editor.putBoolean("del Records", delRecords);
                     editor.apply();
                     deviceID = uuid+key+iv;
-                    startStopLocationService(true);
+                    startLocationService(true);
                     showIdViews(idViewsGroup, idTxtView, spin, deviceID, recordSwitch);
                 } else {
-                    startStopLocationService(false);
+                    startLocationService(false);
                     hideIdViews(idViewsGroup, idTxtView, spin, recordSwitch);
                 }
             }
@@ -228,7 +223,6 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
     //spinner view methods
     @Override
     public void onItemSelected(AdapterView<?> arg0, View spin, int index, long id) {
-        //Toast.makeText(getApplicationContext(),frequency[index] , Toast.LENGTH_LONG).show();
         selectedFrequency = frequency[index];
         switch (selectedFrequency){
             case "30 seconds":
@@ -267,7 +261,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         }
     }
 
-    private void startStopLocationService(boolean start){
+    private void startLocationService(boolean start){
         Intent serviceIntent = new Intent(this, LocationService.class);
         serviceIntent.putExtra("ENCRYPTOR", encryptor);
         serviceIntent.putExtra("INTERVAL", updateInterval);
@@ -346,11 +340,6 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
-    }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager != null ? connectivityManager.getActiveNetworkInfo() : null;
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void showIdViews(Group idViewsGroup, TextView idTxt, Spinner spin, String deviceID, Switch switchRecord) {

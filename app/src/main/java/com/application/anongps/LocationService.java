@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
@@ -54,6 +56,11 @@ public class LocationService extends Service {
                 Log.d(TAG, "onLocationResult: got location result.");
 
                 Location location = locationResult.getLastLocation();
+                //check internet connection
+                if(!isNetworkAvailable()){
+                    Toast.makeText(getApplicationContext(), "No Internet Connection. Location sharing may not work" , Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 if (location != null) {
                     String lat = String.valueOf(location.getLatitude());
@@ -74,9 +81,7 @@ public class LocationService extends Service {
         };
 
         String CHANNEL_ID = "channel_01";
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                "Channel",
-                NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Channel", NotificationManager.IMPORTANCE_DEFAULT);
 
         ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
 
@@ -137,6 +142,11 @@ public class LocationService extends Service {
         String uuid = encryptor.getUuid();
 
         dbRef.child(uuid).setValue(dev);
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager != null ? connectivityManager.getActiveNetworkInfo() : null;
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

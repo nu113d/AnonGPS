@@ -78,9 +78,9 @@ public class SearchActivity extends AppCompatActivity {
 
                 // Device ID = 32 chars uuid + 64 chars key + 32 chars IV = 128 chars
                 if (id.length() == 128) {
-                     uuid = id.substring(0, 32);
-                     key = id.substring(32, 96);
-                     iv = id.substring(96, 128);
+                    uuid = id.substring(0, 32);
+                    key = id.substring(32, 96);
+                    iv = id.substring(96, 128);
                     addName(name);
                     nameText.setText("");
                     idText.setText("");
@@ -102,9 +102,7 @@ public class SearchActivity extends AppCompatActivity {
                 // If the clipboard doesn't contain data, disable the paste menu item.
                 // If it does contain data, decide whether you can handle the data.
                 if (!(clipboard.hasPrimaryClip())) {
-
                     pasteButton.setEnabled(false);
-
                 } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
                     // Disables the paste menu item, since the clipboard has data but it isn't plain text.
                     pasteButton.setEnabled(false);
@@ -141,7 +139,6 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void addName(String name) {
-        //localDB.insertName(name);
         if (name.isEmpty()){
             //generate a random name
             Random random = new Random();

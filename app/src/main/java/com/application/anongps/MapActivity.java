@@ -32,7 +32,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class MapActivity extends AppCompatActivity {
-    private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map = null;
     private String name, uuid, key, iv;
     private Decryptor decryptor;
@@ -57,7 +56,6 @@ public class MapActivity extends AppCompatActivity {
         Intent intent = getIntent();
         name = intent.getStringExtra("Name");
         nameTxt.setText(name);
-
 
         localDB = new LocalDB(this);
         loadNameData(name); //load data from SQLite db
