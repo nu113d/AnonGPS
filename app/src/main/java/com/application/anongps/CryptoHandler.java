@@ -5,8 +5,10 @@ import java.io.Serializable;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
+//handles the encoding and the cryptographic algorithm
 public class CryptoHandler {
     protected static final String AES_ALGORITHM = "AES";
+    protected static final int AES_KEY_SIZE = 256;
     protected static final String AES_MODE = "AES/CBC/PKCS5Padding";
 
     protected SecretKey secretKey;

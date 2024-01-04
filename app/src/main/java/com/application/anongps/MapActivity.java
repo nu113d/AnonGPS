@@ -31,6 +31,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+//Shows the map and all the info for the tracking user
 public class MapActivity extends AppCompatActivity {
     private MapView map = null;
     private String name, uuid, key, iv;

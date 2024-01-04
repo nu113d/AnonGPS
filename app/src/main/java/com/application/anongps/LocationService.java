@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DecimalFormat;
 
+//implements the gps tracking and saves data to firebase
 public class LocationService extends Service {
     private static final String TAG = "LocationService";
     private DecimalFormat roundedValue = new DecimalFormat("#.#"); //for rounding speed and altitude to 1 decimal

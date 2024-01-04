@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+//TrackActivity: Track my device
+//SearchActivity: Search for a device
 public class MainActivity extends AppCompatActivity {
 
     @Override

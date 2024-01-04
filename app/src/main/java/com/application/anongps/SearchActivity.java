@@ -27,6 +27,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Random;
 
+//The "add device" screen
 public class SearchActivity extends AppCompatActivity {
     private ArrayList<String> namesList;
     private ArrayAdapter<String> namesAdapter;

@@ -39,7 +39,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/BaseColor"
             android:ems="10"
-            android:hint="Paste or Scan Device Id"
+            android:hint="Paste or Scan Device ID"
             android:inputType="text"
             android:textColor="@color/white"
             android:textColorHint="@color/textColorHint"
@@ -125,5 +125,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/noDataText"
         app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/infoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select one of the devices below to see its location"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

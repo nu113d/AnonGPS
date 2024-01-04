@@ -30,6 +30,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//Tracking options screen. Generates keys and starts the LocationService
 public class TrackActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     String[] frequency = { "30 seconds", "1 minute", "2 minutes", "5 minutes", "10 minutes", "30 minutes"};
@@ -101,7 +102,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         if (masterSwitch.isChecked()) {
             showIdViews(idViewsGroup, idTxtView, spin, deviceID, recordSwitch);
         } else {
-            hideIdViews(idViewsGroup, idTxtView, spin, recordSwitch);
+            hideIdViews(idViewsGroup, spin, recordSwitch);
         }
 
         //copy id button
@@ -143,8 +144,8 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         help1Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                okAlert("Help", "If enabled, your location data will be deleted from the database when location is not shared. Others won't be able to find you at all." +
-                        "If disabled, your data will be deleted automatically after 2 days of inactivity", true);
+                okAlert("Help", "If enabled, your location will not be available when sharing is off. Others won't be able to find you at all." +
+                        "If disabled, only your last known location will be visible", true);
             }
         });
 
@@ -207,7 +208,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
                     showIdViews(idViewsGroup, idTxtView, spin, deviceID, recordSwitch);
                 } else {
                     startLocationService(false);
-                    hideIdViews(idViewsGroup, idTxtView, spin, recordSwitch);
+                    hideIdViews(idViewsGroup, spin, recordSwitch);
                 }
             }
         });
@@ -304,7 +305,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
 
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+        builder.setMessage("Your GPS seems disabled, do you want to enable it?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick( final DialogInterface dialog, final int id) {
@@ -349,7 +350,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         idViewsGroup.setVisibility(View.VISIBLE);
     }
 
-    private void hideIdViews(Group idViewsGroup, TextView idTxt, Spinner spin, Switch switchRecord) {
+    private void hideIdViews(Group idViewsGroup, Spinner spin, Switch switchRecord) {
         spin.setEnabled(true);
         switchRecord.setEnabled(true);
         idViewsGroup.setVisibility(View.GONE);

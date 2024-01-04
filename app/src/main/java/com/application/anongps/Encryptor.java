@@ -28,7 +28,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Encryptor extends CryptoHandler implements Serializable {
-    private static final int AES_KEY_SIZE = 256;
     private String uuid;
 
     public Encryptor() {

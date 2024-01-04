@@ -14,9 +14,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Decryptor extends CryptoHandler{
-    private static final String AES_ALGORITHM = "AES";
     private static final String AES_MODE = "AES/CBC/PKCS5Padding";
-
     private SecretKey secretKey;
     private IvParameterSpec ivParameterSpec;
 

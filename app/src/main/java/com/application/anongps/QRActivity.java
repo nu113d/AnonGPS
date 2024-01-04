@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.google.zxing.BarcodeFormat;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+//It's the qr code to scan. Started from TrackActivity
 public class QRActivity extends AppCompatActivity {
 
     @Override

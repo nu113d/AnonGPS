@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+//saves locally names and keys
 public class LocalDB extends SQLiteOpenHelper {
      static final String DATABASE_NAME = "Anon";
      static final String TABLE_NAME = "devices";
