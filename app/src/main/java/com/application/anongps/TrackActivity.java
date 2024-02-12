@@ -1,6 +1,7 @@
 package com.application.anongps;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
@@ -40,14 +41,16 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
     String deviceID;
     Encryptor encryptor;
     boolean locationPermissionGranted = false;
-    boolean delRecords = false;
+    boolean delRecords = false;  //delete last known location?
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9002;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Tracking Options");
 
         Button copyBtn = (Button) findViewById(R.id.copyBtn);
         Button shareBtn = (Button) findViewById(R.id.shareBtn);
@@ -140,7 +143,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
             }
         });
 
-        //delete records help button
+        //delete last known location help button
         help1Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,7 +215,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
                 }
             }
         });
-        //del records switch listener
+        //del last location switch listener
         recordSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -277,11 +280,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
+        //The result of the permission request is handled by a callback onRequestPermissionsResult.
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);

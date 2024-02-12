@@ -3,6 +3,7 @@ package com.application.anongps;
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,7 +43,9 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Search/Add a Device");
 
         Button addButton = findViewById(R.id.addButton);
         Button pasteButton = findViewById(R.id.pasteButton);
@@ -57,6 +60,7 @@ public class SearchActivity extends AppCompatActivity {
         namesAdapter = new ArrayAdapter<>(this, R.layout.devices_list_layout, namesList);
         listView.setAdapter(namesAdapter);
 
+        //load saved names
         loadNames();
 
         // Register context menu for the ListView items (long-press action)

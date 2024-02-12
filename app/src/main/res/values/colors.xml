@@ -2,8 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="buttonColorTint">#292828</color>
-    <color name="backround">#454749</color>
-    <color name="BaseColor">#57C708</color>
-    <color name="textColorHint">#8F9193</color>
+    <color name="Title">#F39A48</color>
+    <color name="Beige">#E4CBB5</color>
+    <color name="Sky_Blue">#78C3D6</color>
+    <color name="buttonColorTint">#183145</color>
+    <color name="background">#747F82</color>
+    <color name="BaseColor">#183145</color>
+    <color name="textColorHint">#C1C3C5</color>
 </resources>

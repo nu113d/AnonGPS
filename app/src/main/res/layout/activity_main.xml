@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backround"
+    android:background="@color/background"
     tools:context=".MainActivity">
 
     <ImageView
@@ -21,13 +21,14 @@
 
     <Button
         android:id="@+id/buttonTrack"
-        style="@android:style/Widget.DeviceDefault.Button"
+        style="@style/Base.Theme.AnonGPS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:text="Track my Device"
+        android:textAllCaps="true"
         android:textColor="@color/white"
-        app:backgroundTint="@color/buttonColorTint"
+        app:backgroundTint="@color/BaseColor"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -47,13 +48,14 @@
 
     <Button
         android:id="@+id/buttonSearch"
-        style="@android:style/Widget.DeviceDefault.Button"
+        style="@style/Base.Theme.AnonGPS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Search for a Device"
+        android:textAllCaps="true"
         android:textColor="@color/white"
-        app:backgroundTint="@color/buttonColorTint"
+        app:backgroundTint="@color/BaseColor"
         app:layout_constraintEnd_toEndOf="@+id/orText"
         app:layout_constraintStart_toStartOf="@+id/orText"
         app:layout_constraintTop_toBottomOf="@+id/orText" />
