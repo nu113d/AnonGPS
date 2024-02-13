@@ -63,7 +63,7 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
         Switch recordSwitch = findViewById(R.id.recordSwitch);
         Group idViewsGroup = findViewById(R.id.group);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("com.application.anongps", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
+        SharedPreferences.Editor prefEditor = pref.edit();
         spin.setOnItemSelectedListener(this);
 
         //check permissions
@@ -162,9 +162,9 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick( final DialogInterface dialog, final int id) {
                                 masterSwitch.setChecked(false);
-                                editor.remove("Key");
-                                editor.remove("IV");
-                                editor.commit();
+                                prefEditor.remove("Key");
+                                prefEditor.remove("IV");
+                                prefEditor.commit();
                                 finish();
                             }
                         })
@@ -189,8 +189,8 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
                         encryptor = new Encryptor();  //generate new keys
                         key = encryptor.getKey();
                         iv = encryptor.getIV();
-                        editor.putString("Key", key);
-                        editor.putString("IV", iv);
+                        prefEditor.putString("Key", key);
+                        prefEditor.putString("IV", iv);
                     }
                     else{
                         encryptor = new Encryptor(key, iv); // else load saved keys
@@ -198,14 +198,14 @@ public class TrackActivity extends AppCompatActivity implements AdapterView.OnIt
                     if(uuid == null){
                         encryptor.genUUID();
                         uuid = encryptor.getUuid();
-                        editor.putString("uuid", uuid);
+                        prefEditor.putString("uuid", uuid);
                     }
                     else{
                         encryptor.setUuid(uuid);
                     }
-                    editor.putString("Update Interval", selectedFrequency);
-                    editor.putBoolean("del Records", delRecords);
-                    editor.apply();
+                    prefEditor.putString("Update Interval", selectedFrequency);
+                    prefEditor.putBoolean("del Records", delRecords);
+                    prefEditor.apply();
                     deviceID = uuid+key+iv;
                     startLocationService(true);
                     showIdViews(idViewsGroup, idTxtView, spin, deviceID, recordSwitch);

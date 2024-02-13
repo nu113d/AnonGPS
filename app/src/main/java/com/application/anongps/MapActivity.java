@@ -107,11 +107,23 @@ public class MapActivity extends AppCompatActivity {
                     speedTxt.setText(getString(R.string.Speed, decSpeed));
 
                     //update map
-                    point.setCoords(Float.parseFloat(decLat), Float.parseFloat(decLon));
-                    mMapController.animateTo(point);
-                    marker.setPosition(point);
-                    marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                    map.getOverlays().add(marker);
+                    //Notice: If the keys have changed we cannot find the new coordinates
+                    //So we notify the user, close the map and delete it from the local db
+                    try{
+                        point.setCoords(Float.parseFloat(decLat), Float.parseFloat(decLon));
+                        mMapController.animateTo(point);
+                        marker.setPosition(point);
+                        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                        map.getOverlays().add(marker);
+                    }
+                    catch (NullPointerException e){
+                        Toast.makeText(getApplicationContext(), "Device is using different keys. Please add the new Device ID" , Toast.LENGTH_LONG).show();
+                        LocalDB localDb = new LocalDB(getApplicationContext());
+                        localDb.delete(name);
+                        deviceRef.removeEventListener(this);
+                        finish();
+                    }
+
                 }
             }
 
