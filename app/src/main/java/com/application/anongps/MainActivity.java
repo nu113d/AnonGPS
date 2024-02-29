@@ -26,9 +26,6 @@ public class MainActivity extends AppCompatActivity {
         TextView howToTxt= (TextView) findViewById(R.id.HowtoText);
         howToTxt.setMovementMethod(LinkMovementMethod.getInstance());
 
-        TextView contributeTxt= (TextView) findViewById(R.id.ContributeText);
-        contributeTxt.setMovementMethod(LinkMovementMethod.getInstance());
-
         if (isLocationServiceRunning()){
             startTrackActivity(true);
         }
