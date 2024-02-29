@@ -5,4 +5,6 @@
     <string name="Lon">Lon:\n%1$s</string>
     <string name="Alt">Altitude:\n%1$s m</string>
     <string name="Speed">Speed:\n%1$s km/h</string>
+    <string name ="How_to"><a href="https://github.com/nu113d/AnonGPS?tab=readme-ov-file#how-to-use">How to Use</a></string>
+    <string name ="Contribute"><a href="https://github.com/nu113d/AnonGPS?tab=readme-ov-file#contributions">Contribute</a></string>
 </resources>
