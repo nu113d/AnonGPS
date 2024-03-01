@@ -4,17 +4,16 @@
 </div>
 
 # About
-AnonGPS is a simple GPS tracking app for Android offering end-to-end encryption across devices without providing any personal information at all. This app is ideal for situations where location tracking is necessary but privacy is paramount.
-
-The application implements symmetric encryption with AES128 to secure all location data. This ensures that only the target users who receive the key can access the data while anything stored in the database is encrypted without any keys.
+AnonGPS is a simple GPS tracking app for Android offering end-to-end encryption across devices without providing any personal information at all.
+The application implements symmetric encryption with AES-256 to secure all location data. This ensures that only the target users who receive the key can access the data while anything stored in the database is encrypted without any keys.
 
 ## Features
+- No account required. Every device has a Unique ID.
 - Track location, altitude and speed
 - Real time updates
-- No account required. Every device has a Unique ID.
 - Share with QR code.
 - Reset the cryptographic keys at any time.
-- Option to save or not your last known location.
+- Option to keep or not your last known location.
 
 # How to Use
 
@@ -57,12 +56,13 @@ By tapping on a saved device you can see the location on the map and all the sha
 
 1. Download the latest APK from the [releases page](https://github.com/nu113d/AnonGPS/releases).
 2. Enable installation from unknown sources in your Android device settings.
-3. Install the APK on your Android device.
+3. Install the APK.
 
 If you want to build the app from source on Android Studio (only for testing), clone the repository, open the project and setup a [Firebase Realtime Database](https://firebase.google.com/docs/android/setup#console) for this project. Inside the database add a path named ``devices``. This is where every new device is saved with its corresponding UUID.
 
 # Contributions
 If you find any bugs, problems or have a proposal for improvements feel free to open an issue.
+*(This is my first completed Android project so any feedback is useful)*
 
 ## TODO
 - Improve UI
